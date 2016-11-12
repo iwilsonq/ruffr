@@ -1,0 +1,3 @@
+rootProject.name = 'ruffr'
+
+include ':app'
