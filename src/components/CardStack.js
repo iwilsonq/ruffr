@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import DogTag from './DogTag';
 
+const Dimensions = require('Dimensions');
+const windowSize = Dimensions.get('window');
+
 const dogs = [
   {
     _id: 0,
@@ -20,7 +23,8 @@ class CardStack extends Component {
   state = {
     x: 0,
     y: 0,
-    dogTags: []
+    dogTags: [],
+    lastDragDirection: 'Drag and Release'
   };
 
   setPosition(e) {
@@ -35,17 +39,22 @@ class CardStack extends Component {
 
   resetPosition(e) {
     this.dragging = false;
-    // Reset on release
+
+    const left = e.nativeEvent.pageX < (windowSize.width/2),
+          displayText = left ? 'Released left' : 'Released right';
+
     this.setState({
       x: 0,
       y: 0,
+      lastDragDirection: displayText
     })
   }
 
   onStartShouldSetResponder(e) {
     this.dragging = true;
-    // Setup initial drag coordinates
-    console.log('dragging');
+
+    this.rotateTop = e.nativeEvent.locationY <= 200;
+
     this.drag = {
       x: e.nativeEvent.pageX,
       y: e.nativeEvent.pageY
@@ -57,8 +66,21 @@ class CardStack extends Component {
     return true;
   }
 
+  getRotationDegree(rotateTop, x) {
+    const rotation = (x / windowSize.width * 100) / 3;
+    const rotate = rotateTop ? 1 : -1,
+          rotateString = (rotation * rotate) + 'deg';
+
+    return rotateString;
+  }
+
   getCardStyle() {
     const transform = [{translateX: this.state.x}, {translateY: this.state.y}];
+
+    if (this.dragging) {
+      transform.push({ rotate: this.getRotationDegree(this.rotateTop, this.state.x) })
+    }
+
     return {transform: transform};
   }
 
@@ -72,7 +94,6 @@ class CardStack extends Component {
 
   render() {
     console.log(this.state);
-    console.log(styles.cardStyle);
     return (
       <View
         onResponderMove={this.setPosition.bind(this)}
