@@ -10,11 +10,33 @@ const dogs = [
     _id: 0,
     profile: {
       name: 'Dawg',
-      pictures: ['https://facebook.github.io/react/img/logo_og.png'],
-      about: "I am a dog, call me Dawg",
-      breed: "Pitbull",
+      pictures: ['tigger.jpg'],
+      about: 'I am a dog, call me Dawg',
+      breed: 'Pitbull',
       age: 6,
       gender: 'Male'
+    }
+  },
+  {
+    _id: 1,
+    profile: {
+      name: 'Alex',
+      pictures: ['alex.jpg'],
+      about: 'I am a husky, my name is Alex',
+      breed: 'Siberian Husky',
+      age: 7,
+      gender: 'Male'
+    }
+  },
+  {
+    _id: 2,
+    profile: {
+      name: 'Dashund',
+      pictures: ['dashund.jpg'],
+      about: 'Lookit me im mr meeseeks',
+      breed: 'Weiner Dog',
+      age: 3,
+      gender: 'Female'
     }
   }
 ];
@@ -24,8 +46,29 @@ class CardStack extends Component {
     x: 0,
     y: 0,
     dogTags: [],
+    currentIndex: 0,
     lastDragDirection: 'Drag and Release'
   };
+
+  componentDidMount() {
+    this.setState({
+      dogTags: dogs
+    });
+  }
+
+  updateCurrentIndex() {
+    const { currentIndex } = this.state;
+
+    if (dogs[currentIndex + 1]) {
+      this.setState({
+        currentIndex: currentIndex + 1
+      });
+    } else {
+      this.setState({
+        currentIndex: 0
+      });
+    }
+  }
 
   setPosition(e) {
     this.setState({
@@ -38,6 +81,7 @@ class CardStack extends Component {
   }
 
   resetPosition(e) {
+    const { x, currentIndex } = this.state;
     this.dragging = false;
 
     const left = e.nativeEvent.pageX < (windowSize.width/2),
@@ -47,7 +91,11 @@ class CardStack extends Component {
       x: 0,
       y: 0,
       lastDragDirection: displayText
-    })
+    });
+
+    if (x < -90 || x > 90) {
+      this.updateCurrentIndex();
+    }
   }
 
   onStartShouldSetResponder(e) {
@@ -81,13 +129,13 @@ class CardStack extends Component {
       transform.push({ rotate: this.getRotationDegree(this.rotateTop, this.state.x) })
     }
 
-    return {transform: transform};
+    return { transform };
   }
 
   renderDogTags() {
     return (
       <DogTag
-        dog={dogs[0]}
+        dog={dogs[this.state.currentIndex]}
       />
     );
   }

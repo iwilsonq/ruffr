@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import { Text, Image, PanResponder } from 'react-native';
-import Card from './Card';
+import { Card, CardSection } from './common'
 import ImageSection from './ImageSection';
-import CardSection from './CardSection';
 
 class DogTag extends Component {
 
   render() {
     const { name, age, pictures, breed, about, gender } = this.props.dog.profile;
+
     return (
       <Card>
         <ImageSection>
           <Image
             style={styles.imageStyle}
-            source={{
-              uri: pictures[0] }}
+            source={{ uri: `http://localhost:8081/images/${pictures[0]}` }}
           />
         </ImageSection>
         <CardSection>
