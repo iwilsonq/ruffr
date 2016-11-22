@@ -5,7 +5,7 @@ import DogTag from './DogTag';
 const Dimensions = require('Dimensions');
 const windowSize = Dimensions.get('window');
 
-const dogs = [
+const dogsHard = [
   {
     _id: 0,
     profile: {
@@ -45,19 +45,19 @@ class CardStack extends Component {
   state = {
     x: 0,
     y: 0,
-    dogTags: [],
+    dogs: [],
     currentIndex: 0,
     lastDragDirection: 'Drag and Release'
   };
 
   componentDidMount() {
-    this.setState({
-      dogTags: dogs
-    });
+    fetch('http://localhost:3000')
+      .then(result => result.json())
+      .then(dogs => this.setState({ dogs }, () => console.log(dogs)));
   }
 
   updateCurrentIndex() {
-    const { currentIndex } = this.state;
+    const { currentIndex, dogs } = this.state;
 
     if (dogs[currentIndex + 1]) {
       this.setState({
@@ -133,15 +133,16 @@ class CardStack extends Component {
   }
 
   renderDogTag() {
+    const { currentIndex, dogs } = this.state;
     return (
       <DogTag
-        dog={dogs[this.state.currentIndex]}
+        dog={dogs[currentIndex]}
       />
     );
   }
 
   renderNext() {
-    const { currentIndex } = this.state;
+    const { currentIndex, dogs } = this.state;
     if (dogs[currentIndex + 1]) {
       return (
         <DogTag
@@ -182,7 +183,7 @@ const styles = {
   cardStyle: {
     position: 'absolute',
     top: 0,
-    width: 375
+    width: windowSize.width
   }
 };
 
