@@ -129,10 +129,10 @@ class CardStack extends Component {
       transform.push({ rotate: this.getRotationDegree(this.rotateTop, this.state.x) })
     }
 
-    return { transform };
+    return [{ transform }, styles.cardStyle];
   }
 
-  renderDogTags() {
+  renderDogTag() {
     return (
       <DogTag
         dog={dogs[this.state.currentIndex]}
@@ -140,25 +140,49 @@ class CardStack extends Component {
     );
   }
 
+  renderNext() {
+    const { currentIndex } = this.state;
+    if (dogs[currentIndex + 1]) {
+      return (
+        <DogTag
+          dog={dogs[this.state.currentIndex + 1]}
+        />
+      );
+    } else {
+      return (
+        <DogTag
+          dog={dogs[0]}
+        />
+      );
+    }
+
+  }
+
   render() {
     console.log(this.state);
     return (
-      <View
-        onResponderMove={this.setPosition.bind(this)}
-        onResponderRelease={this.resetPosition.bind(this)}
-        onStartShouldSetResponder={this.onStartShouldSetResponder.bind(this)}
-        onMoveShouldSetResponder={this.onMoveShouldSetResponder}
-        style={this.getCardStyle()}
-      >
-        {this.renderDogTags()}
+      <View>
+        {this.renderNext()}
+        <View
+          onResponderMove={this.setPosition.bind(this)}
+          onResponderRelease={this.resetPosition.bind(this)}
+          onStartShouldSetResponder={this.onStartShouldSetResponder.bind(this)}
+          onMoveShouldSetResponder={this.onMoveShouldSetResponder}
+          style={this.getCardStyle()}
+        >
+          {this.renderDogTag()}
+        </View>
       </View>
+
     );
   }
 }
 
 const styles = {
   cardStyle: {
-
+    position: 'absolute',
+    top: 0,
+    width: 375
   }
 };
 
