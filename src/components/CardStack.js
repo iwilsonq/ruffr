@@ -5,42 +5,6 @@ import DogTag from './DogTag';
 const Dimensions = require('Dimensions');
 const windowSize = Dimensions.get('window');
 
-const dogsHard = [
-  {
-    _id: 0,
-    profile: {
-      name: 'Dawg',
-      pictures: ['tigger.jpg'],
-      about: 'I am a dog, call me Dawg',
-      breed: 'Pitbull',
-      age: 6,
-      gender: 'Male'
-    }
-  },
-  {
-    _id: 1,
-    profile: {
-      name: 'Alex',
-      pictures: ['alex.jpg'],
-      about: 'I am a husky, my name is Alex',
-      breed: 'Siberian Husky',
-      age: 7,
-      gender: 'Male'
-    }
-  },
-  {
-    _id: 2,
-    profile: {
-      name: 'Dashund',
-      pictures: ['dashund.jpg'],
-      about: 'Lookit me im mr meeseeks',
-      breed: 'Weiner Dog',
-      age: 3,
-      gender: 'Female'
-    }
-  }
-];
-
 class CardStack extends Component {
   state = {
     x: 0,

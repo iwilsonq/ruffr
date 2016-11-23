@@ -7,6 +7,7 @@ class DogTag extends Component {
 
   render() {
     const { nameStyle, genderStyle, imageStyle } = styles;
+    const baseURL = `http://localhost:3000/images/`
 
     if (this.props.dog) {
       const { name, age, pictures, breed, about, gender } = this.props.dog;
@@ -16,7 +17,7 @@ class DogTag extends Component {
             <ImageSection>
               <Image
                 style={imageStyle}
-                source={{ uri: `http://localhost:8081/images/${pictures[0]}` }}
+                source={{ uri: `${baseURL}${pictures[0]}` }}
               />
             </ImageSection>
             <CardSection>
