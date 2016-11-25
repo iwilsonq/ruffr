@@ -1,9 +1,29 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import DogTag from './DogTag';
 
 const Dimensions = require('Dimensions');
 const windowSize = Dimensions.get('window');
+
+const Woof = ({opacity}) => {
+  return (
+    <Image
+      source={{ uri: "http://localhost:3000/images/woof.png" }}
+      alt="woof"
+      style={[ {opacity}, {...styles.woofStyle}]}
+    />
+  );
+};
+
+const Grr = ({opacity}) => {
+  return (
+    <Image
+      source={{ uri: "http://localhost:3000/images/grr.png" }}
+      alt="grr"
+      style={[ {opacity}, {...styles.grrStyle}]}
+    />
+  );
+};
 
 class CardStack extends Component {
   state = {
@@ -35,9 +55,11 @@ class CardStack extends Component {
   }
 
   setPosition(e) {
+    const { x, y } = this.state;
+
     this.setState({
-      x: this.state.x + (e.nativeEvent.pageX - this.drag.x),
-      y: this.state.y + (e.nativeEvent.pageY - this.drag.y)
+      x: x + (e.nativeEvent.pageX - this.drag.x),
+      y: y + (e.nativeEvent.pageY - this.drag.y)
     });
 
     this.drag.x = e.nativeEvent.pageX;
@@ -97,11 +119,17 @@ class CardStack extends Component {
   }
 
   renderDogTag() {
-    const { currentIndex, dogs } = this.state;
+    const { currentIndex, dogs, x, y } = this.state;
+    const opacity = Math.abs(x) / 90;
     return (
-      <DogTag
-        dog={dogs[currentIndex]}
-      />
+      <View>
+        <DogTag
+          dog={dogs[currentIndex]}
+        />
+        { (x > 0 && this.dragging) ? <Woof opacity={opacity} /> : null }
+        { (x < 0 && this.dragging) ? <Grr opacity={opacity} /> : null }
+      </View>
+
     );
   }
 
@@ -124,7 +152,6 @@ class CardStack extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <View>
         {this.renderNext()}
@@ -147,7 +174,26 @@ const styles = {
   cardStyle: {
     position: 'absolute',
     top: 0,
+    zIndex: 1,
     width: windowSize.width
+  },
+  grrStyle: {
+    position: 'absolute',
+    top: 50,
+    right: 15,
+    zIndex: 2,
+    height: 55,
+    width: windowSize.width / 3,
+    transform: [{rotate: '40deg'}]
+  },
+  woofStyle: {
+    position: 'absolute',
+    top: 50,
+    left: 15,
+    zIndex: 2,
+    height: 55,
+    width: windowSize.width / 3,
+    transform: [{rotate: '-40deg'}]
   }
 };
 
