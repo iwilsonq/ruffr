@@ -179,21 +179,21 @@ const styles = {
   },
   grrStyle: {
     position: 'absolute',
-    top: 50,
+    top: 40,
     right: 15,
     zIndex: 2,
     height: 55,
     width: windowSize.width / 3,
-    transform: [{rotate: '40deg'}]
+    transform: [{rotate: '20deg'}]
   },
   woofStyle: {
     position: 'absolute',
-    top: 50,
+    top: 40,
     left: 15,
     zIndex: 2,
     height: 55,
     width: windowSize.width / 3,
-    transform: [{rotate: '-40deg'}]
+    transform: [{rotate: '-20deg'}]
   }
 };
 
